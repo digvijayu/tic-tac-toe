@@ -1,50 +1,31 @@
-import {
-	Container, 
-	Sprite, 
-	Ticker
-} from "pixi.js";
+import { Container } from "pixi.js";
+
+import GridLine from "../components/GridLine";
+import gameDimensions from "../components/GameDimensions";
+import { Orientation } from "../utils/enums";
 
 export class GameScene extends Container {
-	// private readonly screenWidth: number;
-	// private readonly screenHeight: number;
-
-	private clampy: Sprite;
-	private clampyVelocity: number = 5;
-	constructor(
-		// screenWidth: number, screenHeight: number
-		) {
+	constructor() {
 		super();
 
-		// this.screenWidth = screenWidth;
-		// this.screenHeight = screenHeight;
+		this.x = window.innerWidth / 2 - gameDimensions.width / 2;
+		this.y = window.innerHeight / 2 - gameDimensions.height / 2;
 
-		this.clampy = Sprite.from("clampy.png");
-
-		this.clampy.anchor.set(0.5);
-		this.clampy.x = 0; // we start it at 0
-		// this.clampy.y = this.screenHeight / 2;
-		this.addChild(this.clampy);
-
-		// See the `, this` thingy there? That is another way of binding the context!
-		Ticker.shared.add(this.update, this);
-
-		// If you want, you can do it the bind way
-		// Ticker.shared.add(this.update.bind(this)); 
-
-		// let grid = GridBuilder.generate();
-		// let g = GridBuilder.generate();
-		// let grid = new GridBuilder();
-		// this.addChild(g);
-		// this.addChild(grid);
+		this.drawGridLines();
 	}
 
-	private update(deltaTime: number): void {
-		this.clampy.x = this.clampy.x + this.clampyVelocity * deltaTime;
+	private drawGridLines() {
+		let gridLineHorizontalTop = new GridLine(Orientation.Horizontal, gameDimensions.height / 3);
+		this.addChild(gridLineHorizontalTop);
 
-		// if (this.clampy.x > this.screenWidth) {
-		// 	// Woah there clampy, come back inside the screen!
-		// 	this.clampy.x = 0;
-		// }
+		let gridLineHorizontalBottom = new GridLine(Orientation.Horizontal, gameDimensions.height * 2 / 3);
+		this.addChild(gridLineHorizontalBottom);
+
+		let gridLineVerticalLeft = new GridLine(Orientation.Vertical, gameDimensions.width / 3);
+		this.addChild(gridLineVerticalLeft);
+
+		let gridLineVerticalRight = new GridLine(Orientation.Vertical, gameDimensions.width * 2 / 3);
+		this.addChild(gridLineVerticalRight);
 	}
 }
 

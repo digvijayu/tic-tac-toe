@@ -3,12 +3,13 @@ import {
 } from "pixi.js";
 
 import GameScene from "./scenes/GameScene";
+import { COLORS } from "./utils/constants";
 
 const app = new Application({
 	view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
 	resolution: window.devicePixelRatio || 1,
 	autoDensity: true,
-	backgroundColor: 0x6495ed,
+	backgroundColor: COLORS.GRID_BG,
 	resizeTo: window
 });
 
