@@ -4,3 +4,5 @@ export const COLORS = {
 }
 
 export const LINE_THICKNESS = 7;
+
+export const CROSS_STRIKE = 15;

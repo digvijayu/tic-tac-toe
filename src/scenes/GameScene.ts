@@ -3,6 +3,7 @@ import { Container } from "pixi.js";
 import GridLine from "../components/GridLine";
 import gameDimensions from "../components/GameDimensions";
 import { Orientation } from "../utils/enums";
+import Cross from "../components/Cross";
 
 export class GameScene extends Container {
 	constructor() {
@@ -12,6 +13,7 @@ export class GameScene extends Container {
 		this.y = window.innerHeight / 2 - gameDimensions.height / 2;
 
 		this.drawGridLines();
+		this.drawX();
 	}
 
 	private drawGridLines() {
@@ -26,6 +28,11 @@ export class GameScene extends Container {
 
 		let gridLineVerticalRight = new GridLine(Orientation.Vertical, gameDimensions.width * 2 / 3);
 		this.addChild(gridLineVerticalRight);
+	}
+
+	private drawX() {
+		const cross = new Cross();
+		this.addChild(cross);
 	}
 }
 

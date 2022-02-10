@@ -37,6 +37,6 @@ export default class GridLine extends Container {
 		this.line.moveTo(fromX, fromY);
 		this.line.lineTo(toX, toY);
 
-		this.factor = this.factor + 0.03 ;
+		this.factor = this.factor + 0.02;
 	}
 }
