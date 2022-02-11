@@ -53,13 +53,7 @@ export class GameScene extends Container {
 	}
 
 	private nextMove(row: number, col: number) {
-		console.log("nextMove", row, col);
-		
-		const x = row * gameDimensions.width / 3;
-		const y = col * gameDimensions.height / 3;
-
-		const cross = new Cross(x, y);
-		this.addChild(cross);
+		this.addChild(new Cross(row, col));
 	}
 }
 

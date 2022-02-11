@@ -14,6 +14,7 @@ export default class Cross extends Container {
 	constructor(x: number, y: number) {
 		super();
 
+		console.log("constructor", x, y)
 		this.x = x + this.padding / 2;
 		this.y = y + this.padding / 2;
 
@@ -30,6 +31,7 @@ export default class Cross extends Container {
 	}
 
 	private updateLine() {
+		console.log("update line")
 		if (this.factor >= 1) {
 			Ticker.shared.remove(this.updateLine, this);
 		}
