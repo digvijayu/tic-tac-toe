@@ -1,9 +1,10 @@
-import { Container } from "pixi.js";
+import { Container, InteractionEvent, Rectangle } from "pixi.js";
 
 import GridLine from "../components/GridLine";
 import gameDimensions from "../components/GameDimensions";
 import { Orientation } from "../utils/enums";
 import Cross from "../components/Cross";
+import Circle from "../components/Circle";
 
 export class GameScene extends Container {
 	constructor() {
@@ -14,6 +15,10 @@ export class GameScene extends Container {
 
 		this.drawGridLines();
 		this.drawX();
+
+		this.interactive = true;
+		this.hitArea = new Rectangle(0, 0, gameDimensions.width, gameDimensions.height);
+		this.on('click', this.handleOnClick.bind(this))
 	}
 
 	private drawGridLines() {
@@ -31,7 +36,29 @@ export class GameScene extends Container {
 	}
 
 	private drawX() {
-		const cross = new Cross();
+		const cross = new Cross(333.3333333333333, 333.3333333333333);
+		this.addChild(cross);
+
+		const circle = new Circle();
+		this.addChild(circle);
+	}
+
+	private handleOnClick(event: InteractionEvent) {
+		let position = event.data.getLocalPosition(this);
+
+		const row = position.x - (position.x % (gameDimensions.width / 3));
+		const col = position.y - (position.y % (gameDimensions.width / 3));
+
+		this.nextMove(row, col);
+	}
+
+	private nextMove(row: number, col: number) {
+		console.log("nextMove", row, col);
+		
+		const x = row * gameDimensions.width / 3;
+		const y = col * gameDimensions.height / 3;
+
+		const cross = new Cross(x, y);
 		this.addChild(cross);
 	}
 }
