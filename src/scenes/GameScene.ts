@@ -53,7 +53,7 @@ export class GameScene extends Container {
 	}
 
 	private nextMove(row: number, col: number) {
-		// this.addChild(new Cross(row, col));
+		this.addChild(new Cross(row, col));
 		this.addChild(new Circle(row, col));
 	}
 }

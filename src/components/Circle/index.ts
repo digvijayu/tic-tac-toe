@@ -27,7 +27,7 @@ export default class Circle extends Container {
 		if (this.factor >= 1) {
 			Ticker.shared.remove(this.updateCircle, this);
 		}
-		this.factor += 0.01;
+		this.factor += 0.05;
 		this.circle.drawCircle(this.center[0], this.center[1], this.radius * this.factor);
 	}
 }
