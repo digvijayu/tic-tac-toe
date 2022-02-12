@@ -39,7 +39,7 @@ export class GameScene extends Container {
 		const cross = new Cross(333.3333333333333, 333.3333333333333);
 		this.addChild(cross);
 
-		const circle = new Circle();
+		const circle = new Circle(0,0);
 		this.addChild(circle);
 	}
 
@@ -53,7 +53,8 @@ export class GameScene extends Container {
 	}
 
 	private nextMove(row: number, col: number) {
-		this.addChild(new Cross(row, col));
+		// this.addChild(new Cross(row, col));
+		this.addChild(new Circle(row, col));
 	}
 }
 
