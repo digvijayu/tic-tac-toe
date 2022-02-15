@@ -12,6 +12,10 @@ class StoreClass extends EventEmitter {
 
 	private nextMove: Player = Player.X;
 
+	getGridState() {
+		return this.gridState;
+	}
+
 	play(row: number, col: number) {
 		this.gridState[row][col] = this.nextMove;
 
@@ -56,8 +60,8 @@ class StoreClass extends EventEmitter {
 	}
 
 	private checkIfAllBoxesAreFilled() {
-		for (let row of [0, 1, 2]) {
-			for (let col of [0, 1, 2]) {
+		for (let row = 0; row < this.gridState.length; row++) {
+			for (let col = 0; col < this.gridState[row].length; col++) {
 				if (this.gridState[row][col] === null) {
 					return false;
 				}
@@ -84,4 +88,6 @@ class StoreClass extends EventEmitter {
 }
 
 let store = new StoreClass();
+// eslint-disable-next-line
+// window._store = store;
 export default store;

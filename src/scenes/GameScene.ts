@@ -6,8 +6,10 @@ import { Orientation, Player } from "../utils/enums";
 import Cross from "../components/Cross";
 import Circle from "../components/Circle";
 import store from "../utils/store";
+import { random } from "../utils/brain";
 
 export class GameScene extends Container {
+	private gameOver = false;
 	constructor() {
 		super();
 
@@ -24,10 +26,12 @@ export class GameScene extends Container {
 	}
 
 	handleOnWin(winnerPlayer: Player, winningLine: number[][]) {
+		this.gameOver = true;
 		console.log("win", winnerPlayer, winningLine);
 	}
-	
+
 	handleOnDraw() {
+		this.gameOver = true;
 		console.log("game is draw");
 	}
 
@@ -46,6 +50,9 @@ export class GameScene extends Container {
 	}
 
 	private handleOnClick(event: InteractionEvent) {
+		if(this.gameOver) {
+			return;
+		}
 		let position = event.data.getLocalPosition(this);
 
 		const rowX = position.x - (position.x % (gameDimensions.width / 3));
@@ -56,6 +63,13 @@ export class GameScene extends Container {
 		if (store.isValidMove(row, col)) {
 			this.nextMove(rowX, colY, store.getNextMove());
 			store.play(row, col);
+			
+			if(this.gameOver) {
+				return;
+			}
+			let [nextRow, nextCol] = random(store.getGridState())
+			this.nextMove(nextCol * (gameDimensions.width / 3), nextRow * (gameDimensions.width / 3), store.getNextMove());
+			store.play(nextRow, nextCol);
 		}
 	}
 
