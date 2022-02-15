@@ -2,9 +2,10 @@ import { Container, InteractionEvent, Rectangle } from "pixi.js";
 
 import GridLine from "../components/GridLine";
 import gameDimensions from "../components/GameDimensions";
-import { Orientation } from "../utils/enums";
+import { Orientation, Player } from "../utils/enums";
 import Cross from "../components/Cross";
 import Circle from "../components/Circle";
+import store from "../utils/store";
 
 export class GameScene extends Container {
 	constructor() {
@@ -14,11 +15,20 @@ export class GameScene extends Container {
 		this.y = window.innerHeight / 2 - gameDimensions.height / 2;
 
 		this.drawGridLines();
-		this.drawX();
 
 		this.interactive = true;
 		this.hitArea = new Rectangle(0, 0, gameDimensions.width, gameDimensions.height);
-		this.on('click', this.handleOnClick.bind(this))
+		this.on('click', this.handleOnClick.bind(this));
+		store.on('gameWon', this.handleOnWin.bind(this));
+		store.on('gameDraw', this.handleOnDraw.bind(this));
+	}
+
+	handleOnWin(winnerPlayer: Player, winningLine: number[][]) {
+		console.log("win", winnerPlayer, winningLine);
+	}
+	
+	handleOnDraw() {
+		console.log("game is draw");
 	}
 
 	private drawGridLines() {
@@ -35,26 +45,27 @@ export class GameScene extends Container {
 		this.addChild(gridLineVerticalRight);
 	}
 
-	private drawX() {
-		const cross = new Cross(333.3333333333333, 333.3333333333333);
-		this.addChild(cross);
-
-		const circle = new Circle(0,0);
-		this.addChild(circle);
-	}
-
 	private handleOnClick(event: InteractionEvent) {
 		let position = event.data.getLocalPosition(this);
 
-		const row = position.x - (position.x % (gameDimensions.width / 3));
-		const col = position.y - (position.y % (gameDimensions.width / 3));
+		const rowX = position.x - (position.x % (gameDimensions.width / 3));
+		const colY = position.y - (position.y % (gameDimensions.width / 3));
 
-		this.nextMove(row, col);
+		const row = colY / (gameDimensions.width / 3);
+		const col = rowX / (gameDimensions.width / 3);
+		if (store.isValidMove(row, col)) {
+			this.nextMove(rowX, colY, store.getNextMove());
+			store.play(row, col);
+		}
 	}
 
-	private nextMove(row: number, col: number) {
-		this.addChild(new Cross(row, col));
-		this.addChild(new Circle(row, col));
+	private nextMove(row: number, col: number, player: Player) {
+		if (player === Player.X) {
+			this.addChild(new Cross(row, col));
+		}
+		else {
+			this.addChild(new Circle(row, col));
+		}
 	}
 }
 
